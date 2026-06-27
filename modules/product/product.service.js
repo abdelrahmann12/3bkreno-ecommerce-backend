@@ -97,7 +97,9 @@ export const getProducts = async (req, res , next) => {
 export const getProductByCategory = async (req , res , next)=>{
   try{
     const {category} = req.query;
-    const products = await Product.find({category});
+     const filter = category ? { category } : {};
+
+    const products = await Product.find(filter);
     if(!products){
       return res.status(400).json({message:"no products found in this catrgory" , success:false})
     }
