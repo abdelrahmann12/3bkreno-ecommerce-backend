@@ -14,9 +14,14 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    credentials:true,
-    origin:"http://localhost:3000"
-}))
+  origin: [
+    "http://localhost:3000",
+    "https://3bkreno-ecommerce-i6tzvuosh-abdelrahmans-projects-f1c08434.vercel.app",
+    // أو لو عندك domain ثابت
+    "https://3bkreno-ecommerce.vercel.app",
+  ],
+  credentials: true,
+}));
 
 const port = process.env.PORT;
 
