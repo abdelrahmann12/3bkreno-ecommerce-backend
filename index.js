@@ -7,6 +7,7 @@ import cors from "cors"
 import { connectDB } from "./DB/connectDB.js";
 import router from "./modules/product/product.controller.js";
 import autRouter from "./modules/auth/auth.controller.js"
+import cartRouter from "./modules/cart/cart.controller.js";
 
 
 
@@ -28,6 +29,7 @@ const port = process.env.PORT;
 
 app.use('/products', router);
 app.use("/auth" , autRouter);
+app.use("/cart" , cartRouter);
 
 await connectDB();
 app.listen( port , ()=>{

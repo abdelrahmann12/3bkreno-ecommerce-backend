@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -23,6 +23,14 @@ const userSchema = new mongoose.Schema({
     enum: ["admin", "user"],
     default: "user",
   },
+
+
+  cart:[
+    {
+      product:{type:mongoose.Schema.Types.ObjectId , ref:"Product" , required:true},
+      quantity:{type:Number , default:1 , min:1},
+    }
+  ]
 });
 
 const User = mongoose.model("User", userSchema);
