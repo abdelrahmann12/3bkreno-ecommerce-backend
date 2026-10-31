@@ -21,6 +21,7 @@ app.use(cors({
     // أو لو عندك domain ثابت
     "https://3bkreno-ecommerce.vercel.app",
   ],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true,
 }));
 

@@ -65,3 +65,4 @@ export const register = async (req, res, next) => {
     return res.status(500).json({ message: err.message, succes: false });
   }
 };
+

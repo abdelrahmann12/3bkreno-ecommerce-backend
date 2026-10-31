@@ -27,6 +27,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 10, // عدد القطع المتاحة
     },
+    hidden:{
+      type:Boolean,
+      default:false
+    }
     //   ageGroup: {
     //     type: String,  // زي "3-5 سنوات" مفيد لمتجر أطفال
     //   },
