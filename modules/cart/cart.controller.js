@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addToCart, deleteCart, getCart } from "./cart.service.js";
+import { addToCart, deleteCart, deleteProductFromCart, getCart } from "./cart.service.js";
 import { verifyToken } from "../../src/middleware/verfiyToken.js";
 
 
