@@ -4,11 +4,13 @@ dotenv.config();
 import express from "express";
 import cors from "cors"
 
+
+
 import { connectDB } from "./DB/connectDB.js";
 import router from "./modules/product/product.controller.js";
-import autRouter from "./modules/auth/auth.controller.js"
+import autRouter from "./modules/auth/auth.controller.js";
 import cartRouter from "./modules/cart/cart.controller.js";
-
+import reviewRouter from "./modules/review/review.controller.js";
 
 
 const app = express();
@@ -27,12 +29,16 @@ app.use(cors({
 
 const port = process.env.PORT;
 
+app.set("trust proxy", 1);
+
 
 app.use('/products', router);
 app.use("/auth" , autRouter);
 app.use("/cart" , cartRouter);
 
-await connectDB();
+app.use(reviewRouter);
+
+connectDB();
 app.listen( port , ()=>{
     console.log("server is running on port" , port);
 })

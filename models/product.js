@@ -27,14 +27,17 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 10, // عدد القطع المتاحة
     },
-    hidden:{
-      type:Boolean,
-      default:false
-    }
+    hidden: {
+      type: Boolean,
+      default: false,
+    },
+    rating: { type: Number, default: 0 },
+    reviewsCount: { type: Number, default: 0 },
     //   ageGroup: {
     //     type: String,  // زي "3-5 سنوات" مفيد لمتجر أطفال
     //   },
   },
+
   { timestamps: true },
 );
 
