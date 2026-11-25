@@ -21,6 +21,5 @@ router.get("/products/:productId/reviews", getProductReviews);
 router.post("/products/:productId/reviews", reviewLimiter, addOrUpdateReview);
 router.delete("/reviews/:reviewId", verifyToken, deleteReview);
 
-// مسار حذف التقييم (للأدمن) هنضيفه بعد ما نشوف الـ middleware بتاع التوكن عندك
 
 export default router;
