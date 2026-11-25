@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Review from "../../models/review.js";
 import Product from "../../models/product.js";
+import User from "../../models/user.js";
 
 // بيحسب متوسط التقييمات وعددها ويحدّث المنتج
 // (لازم حقلين rating و reviewsCount يكونوا في schema المنتج، وإلا Mongoose هيتجاهلهم)
@@ -57,6 +58,44 @@ export const getProductReviews = async (req, res) => {
   }
 };
 
+// DELETE /reviews/:reviewId  (للأدمن بس)
+// بيتأكد إن المستخدم أدمن من الداتابيز، فمحتاج بس إن الـ middleware يحط req.user.id
+export const deleteReview = async (req, res) => {
+  try {
+    if (!req.user?.id) {
+      return res
+        .status(401)
+        .json({ success: false, message: "سجّل دخول الأول" });
+    }
+
+    const admin = await User.findById(req.user.id);
+    if (!admin || admin.role !== "admin") {
+      return res.status(403).json({ success: false, message: "للأدمن فقط" });
+    }
+
+    const { reviewId } = req.params;
+    if (!mongoose.isValidObjectId(reviewId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "معرّف التقييم غير صالح" });
+    }
+
+    const review = await Review.findById(reviewId);
+    if (!review) {
+      return res
+        .status(404)
+        .json({ success: false, message: "التقييم غير موجود" });
+    }
+
+    await review.deleteOne();
+    await recalcProductRating(review.product); // يحدّث متوسط النجوم وعدد التقييمات
+
+    return res.status(200).json({ success: true, message: "تم حذف التقييم" });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 // POST /products/:productId/reviews  (عام، من غير تسجيل دخول)
 // لو نفس المتصفح قيّم المنتج قبل كده، التقييم بيتعدّل بدل ما يتكرر
 export const addOrUpdateReview = async (req, res) => {
@@ -102,7 +141,12 @@ export const addOrUpdateReview = async (req, res) => {
     const review = await Review.findOneAndUpdate(
       { product: productId, visitorId },
       { name, rating, comment },
-      { new: true, upsert: true, setDefaultsOnInsert: true, runValidators: true },
+      {
+        returnDocument: "after",
+        upsert: true,
+        setDefaultsOnInsert: true,
+        runValidators: true,
+      },
     );
 
     await recalcProductRating(productId);
